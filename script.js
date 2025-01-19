@@ -311,20 +311,30 @@ const images = [
     // "images/509.png"
     // "images/510.png"
 ];
+
 // Fungsi untuk memilih foto secara acak
 function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
 }
 
-// Cek apakah sudah ada foto tersimpan di sessionStorage
-let selectedImage = sessionStorage.getItem('selectedImage');
+// Tunggu hingga DOM selesai dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    // Cek apakah sudah ada foto tersimpan di sessionStorage
+    let selectedImage = sessionStorage.getItem('selectedImage');
 
-if (!selectedImage) {
-    // Jika belum ada, pilih foto secara acak dan simpan
-    selectedImage = getRandomImage();
-    sessionStorage.setItem('selectedImage', selectedImage);
-}
+    if (!selectedImage) {
+        // Jika belum ada, pilih foto secara acak dan simpan
+        selectedImage = getRandomImage();
+        sessionStorage.setItem('selectedImage', selectedImage);
+    }
 
-// Set src dari elemen img
-document.getElementById('random-image').src = selectedImage;
+    // Set src dari elemen img
+    const imageElement = document.getElementById('random-image');
+    if (imageElement) {
+        imageElement.src = selectedImage;
+        imageElement.alt = "Random Image"; // Tambahkan alt sebagai fallback
+    } else {
+        console.error("Elemen dengan ID 'random-image' tidak ditemukan.");
+    }
+});
