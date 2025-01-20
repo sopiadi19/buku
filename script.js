@@ -312,15 +312,6 @@ const images = [
     // "images/510.png"
 ];
 
-// // Fungsi untuk membuat array gambar secara dinamis
-// function generateImageArray(prefix, start, end, extension) {
-//     const images = [];
-//     for (let i = start; i <= end; i++) {
-//         images.push(`${prefix}${i}${extension}`);
-//     }
-//     return images;
-// }
-
 // Fungsi untuk memilih foto secara acak
 function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * images.length);
