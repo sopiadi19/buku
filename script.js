@@ -321,8 +321,9 @@ function getRandomImage() {
 // Cek apakah sudah ada foto tersimpan di sessionStorage
 let selectedImage = sessionStorage.getItem('selectedImage');
 
-if (!selectedImage) {
-    // Jika belum ada, pilih foto secara acak dan simpan
+// Validasi apakah foto yang disimpan ada di dalam array images
+if (!selectedImage || !images.includes(selectedImage)) {
+    // Jika belum ada atau gambar tidak valid, pilih foto secara acak dan simpan
     selectedImage = getRandomImage();
     sessionStorage.setItem('selectedImage', selectedImage);
 }
