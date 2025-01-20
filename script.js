@@ -1,6 +1,6 @@
 // Array foto yang tersedia
 const images = [
-"images/1.png",
+    "images/1.png",
     "images/2.png",
     "images/3.png",
     "images/4.png",
@@ -318,15 +318,15 @@ function getRandomImage() {
     return images[randomIndex];
 }
 
-// // Cek apakah sudah ada foto tersimpan di sessionStorage
-// let selectedImage = sessionStorage.getItem('selectedImage');
+// Cek apakah sudah ada foto tersimpan di sessionStorage
+let selectedImage = sessionStorage.getItem('selectedImage');
 
-// if (!selectedImage) {
-//     // Jika belum ada, pilih foto secara acak dan simpan
-//     selectedImage = getRandomImage();
-//     sessionStorage.setItem('selectedImage', selectedImage);
-// }
+if (!selectedImage) {
+    // Jika belum ada, pilih foto secara acak dan simpan
+    selectedImage = getRandomImage();
+    sessionStorage.setItem('selectedImage', selectedImage);
+}
 
-// // Set src dari elemen img
-// document.getElementById('random-image').src = selectedImage;
+// Set src dari elemen img
+document.getElementById('random-image').src = selectedImage;
 
