@@ -329,4 +329,3 @@ if (!selectedImage) {
 
 // Set src dari elemen img
 document.getElementById('random-image').src = selectedImage;
-
