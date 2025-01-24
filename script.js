@@ -1,23 +1,3 @@
-// Fungsi untuk menyetel cookie
-function setCookie(name, value, days) {
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    const expires = `expires=${date.toUTCString()}`;
-    document.cookie = `${name}=${value}; ${expires}; path=/`;
-}
-
-// Fungsi untuk mendapatkan cookie
-function getCookie(name) {
-    const cookies = document.cookie.split('; ');
-    for (let cookie of cookies) {
-        const [key, value] = cookie.split('=');
-        if (key === name) {
-            return value;
-        }
-    }
-    return null;
-}
-
 // Array foto yang tersedia
 const images = [
     "images/1.png",
@@ -338,23 +318,25 @@ function getRandomImage() {
     return images[randomIndex];
 }
 
-// Ambil gambar dari cookie
-let selectedImage = getCookie('selectedImage');
+// Cek apakah sudah ada gambar tersimpan di sessionStorage
+let selectedImage = sessionStorage.getItem('selectedImage');
 
-// Validasi apakah gambar di cookie valid
+// Validasi apakah gambar tersimpan valid
 if (!selectedImage || !images.includes(selectedImage)) {
-    selectedImage = getRandomImage(); // Pilih gambar secara acak
-    setCookie('selectedImage', selectedImage, 1); // Simpan gambar di cookie selama 1 hari
+    // Jika belum ada gambar tersimpan atau gambar tidak valid, pilih gambar secara acak
+    selectedImage = getRandomImage();
+    sessionStorage.setItem('selectedImage', selectedImage); // Simpan gambar yang dipilih di sessionStorage
 }
 
-// Set gambar pada elemen img
+// Atur `src` elemen <img> menggunakan gambar yang valid
 const imageElement = document.getElementById('random-image');
 if (imageElement) {
     imageElement.src = selectedImage;
     imageElement.onerror = () => {
         console.error(`Gambar gagal dimuat: ${selectedImage}`);
-        imageElement.src = "default.jpg"; // Gambar fallback jika gambar tidak ditemukan
+        sessionStorage.removeItem('selectedImage'); // Hapus gambar yang tidak valid dari sessionStorage
+        imageElement.src = "default.jpg"; // Ganti dengan gambar fallback
     };
 } else {
-    console.error("Element dengan id 'random-image' tidak ditemukan.");
+    console.error("Elemen dengan id 'random-image' tidak ditemukan.");
 }
