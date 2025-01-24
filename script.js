@@ -1,3 +1,23 @@
+// Fungsi untuk menyetel cookie
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    const expires = `expires=${date.toUTCString()}`;
+    document.cookie = `${name}=${value}; ${expires}; path=/`;
+}
+
+// Fungsi untuk mendapatkan cookie
+function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [key, value] = cookie.split('=');
+        if (key === name) {
+            return value;
+        }
+    }
+    return null;
+}
+
 // Array foto yang tersedia
 const images = [
     "images/1.png",
@@ -318,29 +338,23 @@ function getRandomImage() {
     return images[randomIndex];
 }
 
-// Validasi array images
-if (!images.length) {
-    console.error("No images available in the array.");
+// Ambil gambar dari cookie
+let selectedImage = getCookie('selectedImage');
+
+// Validasi apakah gambar di cookie valid
+if (!selectedImage || !images.includes(selectedImage)) {
+    selectedImage = getRandomImage(); // Pilih gambar secara acak
+    setCookie('selectedImage', selectedImage, 1); // Simpan gambar di cookie selama 1 hari
+}
+
+// Set gambar pada elemen img
+const imageElement = document.getElementById('random-image');
+if (imageElement) {
+    imageElement.src = selectedImage;
+    imageElement.onerror = () => {
+        console.error(`Gambar gagal dimuat: ${selectedImage}`);
+        imageElement.src = "default.jpg"; // Gambar fallback jika gambar tidak ditemukan
+    };
 } else {
-    // Cek apakah sudah ada foto tersimpan di localStorage
-    let selectedImage = localStorage.getItem('selectedImage');
-
-    // Validasi apakah foto yang disimpan ada di dalam array images
-    if (!selectedImage || !images.includes(selectedImage)) {
-        // Jika belum ada atau gambar tidak valid, pilih foto secara acak dan simpan
-        selectedImage = getRandomImage();
-        localStorage.setItem('selectedImage', selectedImage);
-    }
-
-    // Set src dari elemen img
-    const imageElement = document.getElementById('random-image');
-    if (imageElement) {
-        imageElement.src = selectedImage;
-        imageElement.onerror = () => {
-            console.error(`Failed to load image: ${selectedImage}`);
-            imageElement.src = "default.jpg"; // Gambar fallback
-        };
-    } else {
-        console.error("Element with id 'random-image' not found.");
-    }
+    console.error("Element dengan id 'random-image' tidak ditemukan.");
 }
