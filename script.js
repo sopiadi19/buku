@@ -318,15 +318,25 @@ function getRandomImage() {
     return images[randomIndex];
 }
 
-// Cek apakah sudah ada foto tersimpan di sessionStorage
-let selectedImage = sessionStorage.getItem('selectedImage');
+// Validasi array images
+if (!images.length) {
+    console.error("No images available in the array.");
+} else {
+    // Cek apakah sudah ada foto tersimpan di sessionStorage
+    let selectedImage = sessionStorage.getItem('selectedImage');
 
-// Validasi apakah foto yang disimpan ada di dalam array images
-if (!selectedImage || !images.includes(selectedImage)) {
-    // Jika belum ada atau gambar tidak valid, pilih foto secara acak dan simpan
-    selectedImage = getRandomImage();
-    sessionStorage.setItem('selectedImage', selectedImage);
+    // Validasi apakah foto yang disimpan ada di dalam array images
+    if (!selectedImage || !images.includes(selectedImage)) {
+        // Jika belum ada atau gambar tidak valid, pilih foto secara acak dan simpan
+        selectedImage = getRandomImage();
+        sessionStorage.setItem('selectedImage', selectedImage);
+    }
+
+    // Set src dari elemen img
+    const imageElement = document.getElementById('random-image');
+    if (imageElement) {
+        imageElement.src = selectedImage;
+    } else {
+        console.error("Element with id 'random-image' not found.");
+    }
 }
-
-// Set src dari elemen img
-document.getElementById('random-image').src = selectedImage;
