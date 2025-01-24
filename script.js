@@ -312,7 +312,7 @@ const images = [
     // "images/510.png"
 ];
 
-// Fungsi untuk memilih foto secara acak
+// Fungsi untuk memilih gambar secara acak
 function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
@@ -322,20 +322,24 @@ function getRandomImage() {
 if (!images.length) {
     console.error("No images available in the array.");
 } else {
-    // Cek apakah sudah ada foto tersimpan di sessionStorage
-    let selectedImage = sessionStorage.getItem('selectedImage');
+    // Cek apakah sudah ada foto tersimpan di localStorage
+    let selectedImage = localStorage.getItem('selectedImage');
 
     // Validasi apakah foto yang disimpan ada di dalam array images
     if (!selectedImage || !images.includes(selectedImage)) {
         // Jika belum ada atau gambar tidak valid, pilih foto secara acak dan simpan
         selectedImage = getRandomImage();
-        sessionStorage.setItem('selectedImage', selectedImage);
+        localStorage.setItem('selectedImage', selectedImage);
     }
 
     // Set src dari elemen img
     const imageElement = document.getElementById('random-image');
     if (imageElement) {
         imageElement.src = selectedImage;
+        imageElement.onerror = () => {
+            console.error(`Failed to load image: ${selectedImage}`);
+            imageElement.src = "default.jpg"; // Gambar fallback
+        };
     } else {
         console.error("Element with id 'random-image' not found.");
     }
