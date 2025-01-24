@@ -325,7 +325,7 @@ let selectedImage = sessionStorage.getItem('selectedImage');
 if (!selectedImage || !images.includes(selectedImage)) {
     // Jika belum ada atau gambar tidak valid, pilih foto secara acak dan simpan
     selectedImage = getRandomImage();
-    sessionStorage.setItem('selectedImage', selectedImage);
+    // sessionStorage.setItem('selectedImage', selectedImage);
 }
 
 // Set src dari elemen img
