@@ -314,25 +314,33 @@ const images = [
 
 // Fungsi untuk memilih foto secara acak
 function getRandomImage() {
+    // Memilih gambar secara acak dari array
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
 }
 
 // Mengecek apakah sudah ada gambar tersimpan di localStorage
-const currentSession = sessionStorage.getItem('sessionId');
-const storedSession = localStorage.getItem('sessionId');
+let currentSession = sessionStorage.getItem('sessionId');
+let storedSession = localStorage.getItem('sessionId');
 
 if (!currentSession || currentSession !== storedSession) {
-    // Pilih gambar baru dan simpan session baru jika membuka tab baru
+    // Jika belum ada sesi atau sesi berbeda, pilih gambar baru dan simpan
     const randomImage = getRandomImage();
-    sessionStorage.setItem('sessionId', new Date().toISOString());
-    localStorage.setItem('sessionId', sessionStorage.getItem('sessionId'));
+    const newSessionId = new Date().toISOString();
+    sessionStorage.setItem('sessionId', newSessionId);
+    localStorage.setItem('sessionId', newSessionId);
     localStorage.setItem('selectedImage', randomImage);
+    currentSession = newSessionId;
 }
 
-// Ambil gambar yang tersimpan di localStorage
 const selectedImage = localStorage.getItem('selectedImage');
 
-// Menampilkan gambar di halaman
-const imgElement = document.getElementById('random-image');
-imgElement.src = selectedImage;
+// Mengatur gambar ketika halaman selesai dimuat
+window.onload = () => {
+    const imgElement = document.getElementById('random-image');
+    if (imgElement) {
+        imgElement.src = selectedImage || getRandomImage();
+    } else {
+        console.error('Element with id "random-image" not found.');
+    }
+};
